@@ -1,0 +1,1862 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Personalized Photo and Slogan Text Hoodie</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #f5f6f8;
+        --white: #ffffff;
+        --text: #1a1a1a;
+        --muted: #6b7280;
+        --border: #e5e7eb;
+        --accent: #1d4ed8;
+        --accent-hover: #1e40af;
+        --star: #f59e0b;
+        --red: #ef4444;
+        --tag-bg: #fee2e2;
+        --tag-text: #b91c1c;
+        --dot: #d1d5db;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      /* ── NAV ── */
+      nav {
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 13px;
+        color: var(--muted);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      nav .breadcrumb a {
+        color: var(--muted);
+        text-decoration: none;
+      }
+      nav .breadcrumb span {
+        margin: 0 6px;
+      }
+      nav .breadcrumb .current {
+        color: var(--text);
+        font-weight: 500;
+      }
+      nav .nav-actions {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
+      nav .nav-actions a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 13px;
+      }
+      nav .nav-actions a:hover {
+        color: var(--text);
+      }
+
+      /* ── LAYOUT ── */
+      .page {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 32px 40px;
+      }
+
+      /* ── PRODUCT TOP ── */
+      .product-top {
+        display: grid;
+        grid-template-columns: 1fr 480px;
+        gap: 40px;
+        background: var(--white);
+        border-radius: 12px;
+        padding: 32px;
+        margin-bottom: 2px;
+      }
+
+      /* Gallery */
+      .gallery {
+        display: flex;
+        gap: 12px;
+      }
+      .gallery-thumbs {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .gallery-thumbs .thumb {
+        width: 64px;
+        height: 64px;
+        border-radius: 6px;
+        border: 2px solid var(--border);
+        cursor: pointer;
+        overflow: hidden;
+        background: var(--bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .gallery-thumbs .thumb.active {
+        border-color: var(--accent);
+      }
+      .gallery-thumbs .thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .gallery-main {
+        flex: 1;
+        border-radius: 10px;
+        overflow: hidden;
+        background: var(--bg);
+        min-height: 420px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .gallery-main img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        max-height: 460px;
+      }
+      .sale-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: var(--red);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 4px;
+        letter-spacing: 0.5px;
+      }
+
+      /* Product Info */
+      .product-info {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .product-info .rating {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .stars {
+        color: var(--star);
+        font-size: 14px;
+        letter-spacing: 1px;
+      }
+      .product-info h1 {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+      .price-row {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+      }
+      .price {
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .price-old {
+        font-size: 16px;
+        color: var(--muted);
+        text-decoration: line-through;
+      }
+      .price-save {
+        font-size: 12px;
+        background: var(--tag-bg);
+        color: var(--tag-text);
+        padding: 2px 8px;
+        border-radius: 20px;
+        font-weight: 600;
+      }
+
+      .divider {
+        height: 1px;
+        background: var(--border);
+      }
+
+      .section-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin-bottom: 6px;
+      }
+
+      /* Color swatches */
+      .swatches {
+        display: flex;
+        gap: 8px;
+      }
+      .swatch {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: border-color 0.2s;
+      }
+      .swatch.active,
+      .swatch:hover {
+        border-color: var(--accent);
+      }
+      .swatch.white {
+        background: #fff;
+        box-shadow: inset 0 0 0 1px #d1d5db;
+      }
+      .swatch.black {
+        background: #111;
+      }
+      .swatch.navy {
+        background: #1e3a5f;
+      }
+      .swatch.gray {
+        background: #9ca3af;
+      }
+
+      /* Size selector */
+      .sizes {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .size-btn {
+        padding: 6px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 6px;
+        background: var(--white);
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-weight: 500;
+      }
+      .size-btn:hover,
+      .size-btn.active {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: #eff6ff;
+      }
+
+      /* Quantity */
+      .qty-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .qty-control {
+        display: flex;
+        align-items: center;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .qty-control button {
+        width: 34px;
+        height: 34px;
+        border: none;
+        background: var(--bg);
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text);
+        transition: background 0.15s;
+      }
+      .qty-control button:hover {
+        background: #e5e7eb;
+      }
+      .qty-control input {
+        width: 44px;
+        height: 34px;
+        border: none;
+        border-left: 1.5px solid var(--border);
+        border-right: 1.5px solid var(--border);
+        text-align: center;
+        font-size: 14px;
+        font-family: "DM Sans", sans-serif;
+        font-weight: 600;
+        outline: none;
+      }
+
+      /* Upload area */
+      .upload-area {
+        border: 2px dashed var(--border);
+        border-radius: 8px;
+        padding: 16px;
+        text-align: center;
+        cursor: pointer;
+        transition: border-color 0.2s;
+        background: #fafafa;
+      }
+      .upload-area:hover {
+        border-color: var(--accent);
+      }
+      .upload-area .upload-icon {
+        font-size: 24px;
+        margin-bottom: 4px;
+      }
+      .upload-area p {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .upload-area span {
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      /* Text input */
+      .text-input {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.2s;
+        background: var(--white);
+      }
+      .text-input:focus {
+        border-color: var(--accent);
+      }
+
+      /* CTA */
+      .btn-primary {
+        width: 100%;
+        padding: 14px;
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+        letter-spacing: 0.3px;
+      }
+      .btn-primary:hover {
+        background: var(--accent-hover);
+      }
+      .btn-wishlist {
+        width: 100%;
+        padding: 13px;
+        background: transparent;
+        color: var(--text);
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-top: 4px;
+      }
+      .btn-wishlist:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      /* Payment icons */
+      .payment-row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .payment-icon {
+        height: 22px;
+        padding: 2px 6px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        background: var(--white);
+        color: var(--muted);
+      }
+
+      /* Features */
+      .perks {
+        display: flex;
+        gap: 12px;
+        padding: 16px 0;
+      }
+      .perk {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .perk-icon {
+        font-size: 16px;
+      }
+
+      /* ── TABS ── */
+      .tabs-section {
+        background: var(--white);
+        border-radius: 12px;
+        margin-bottom: 2px;
+      }
+      .tabs-header {
+        display: flex;
+        border-bottom: 1px solid var(--border);
+        padding: 0 32px;
+      }
+      .tab-btn {
+        padding: 14px 20px;
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--muted);
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        transition: all 0.2s;
+      }
+      .tab-btn.active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+        font-weight: 600;
+      }
+      .tab-btn:hover {
+        color: var(--text);
+      }
+      .tabs-content {
+        padding: 28px 32px;
+      }
+      .tab-pane {
+        display: none;
+      }
+      .tab-pane.active {
+        display: block;
+      }
+
+      /* Overview tab */
+      .overview-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+      .overview-col h4 {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--text);
+      }
+      .overview-col p,
+      .overview-col li {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+      .overview-col ul {
+        padding-left: 16px;
+      }
+
+      /* Sizing tab */
+      .size-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .size-table th {
+        background: var(--bg);
+        padding: 10px 14px;
+        text-align: left;
+        font-weight: 600;
+        border: 1px solid var(--border);
+      }
+      .size-table td {
+        padding: 9px 14px;
+        border: 1px solid var(--border);
+        color: var(--muted);
+      }
+      .size-table tr:nth-child(even) td {
+        background: #fafafa;
+      }
+      .sizing-layout {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 32px;
+        align-items: start;
+      }
+      .hoodie-diagram {
+        width: 180px;
+        opacity: 0.7;
+      }
+
+      /* Packaging tab */
+      .pkg-cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+      .pkg-cols h4 {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .pkg-cols p {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      /* Shipping tab */
+      .shipping-cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+
+      /* ── TRUST BADGES ── */
+      .trust-section {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 28px 32px;
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 2px;
+      }
+      .trust-item {
+        text-align: center;
+      }
+      .trust-item .icon {
+        font-size: 28px;
+        margin-bottom: 6px;
+      }
+      .trust-item h5 {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 3px;
+      }
+      .trust-item p {
+        font-size: 12px;
+        color: var(--muted);
+        max-width: 120px;
+      }
+
+      /* ── REVIEWS ── */
+      .reviews-section {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 32px;
+        margin-bottom: 2px;
+      }
+      .reviews-section h2 {
+        font-family: "Playfair Display", serif;
+        font-size: 20px;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 4px;
+      }
+      .reviews-section .sub {
+        text-align: center;
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 24px;
+      }
+      .reviews-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      .review-card {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 20px;
+        display: flex;
+        gap: 16px;
+      }
+      .reviewer-photo {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        object-fit: cover;
+        flex-shrink: 0;
+        background: var(--bg);
+      }
+      .reviewer-photo-placeholder {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #c7d2fe, #818cf8);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 700;
+        font-size: 18px;
+      }
+      .review-body h5 {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+      .review-body .r-stars {
+        color: var(--star);
+        font-size: 13px;
+      }
+      .review-body .r-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+        margin: 6px 0 4px;
+      }
+      .review-body p {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      .review-body .r-product {
+        font-size: 12px;
+        color: var(--accent);
+        margin-top: 6px;
+      }
+      .review-right {
+        display: flex;
+        align-items: flex-start;
+      }
+      .review-right img {
+        width: 72px;
+        height: 72px;
+        border-radius: 8px;
+        object-fit: cover;
+        background: var(--bg);
+      }
+      .review-right-placeholder {
+        width: 72px;
+        height: 72px;
+        border-radius: 8px;
+        background: var(--bg);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted);
+        font-size: 11px;
+        text-align: center;
+      }
+
+      /* pagination dots */
+      .review-dots {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        margin-top: 20px;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--dot);
+        cursor: pointer;
+      }
+      .dot.active {
+        background: var(--accent);
+      }
+
+      /* ── MATCHING ── */
+      .matching-section {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 32px;
+        margin-bottom: 2px;
+      }
+      .matching-section h2 {
+        font-family: "Playfair Display", serif;
+        font-size: 20px;
+        text-align: center;
+        margin-bottom: 4px;
+      }
+      .matching-section .sub {
+        text-align: center;
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 24px;
+      }
+      .matching-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+      .matching-card {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .matching-card-img {
+        height: 160px;
+        background: var(--bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .matching-card-img .mc-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        background: var(--red);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+      .matching-card-body {
+        padding: 12px;
+      }
+      .matching-card-body h5 {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+      .matching-card-body .mc-stars {
+        color: var(--star);
+        font-size: 12px;
+      }
+      .matching-card-body .mc-price {
+        font-size: 14px;
+        font-weight: 700;
+        margin-top: 4px;
+      }
+      .btn-view-all {
+        display: block;
+        margin: 20px auto 0;
+        padding: 10px 28px;
+        border: 1.5px solid var(--accent);
+        border-radius: 8px;
+        color: var(--accent);
+        background: transparent;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-view-all:hover {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      /* ── FAQ ── */
+      .faq-section {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 32px;
+        margin-bottom: 2px;
+      }
+      .faq-section h2 {
+        font-family: "Playfair Display", serif;
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+      .faq-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+      .faq-col {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .faq-item {
+        border-bottom: 1px solid var(--border);
+        padding: 14px 0;
+      }
+      .faq-item summary {
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .faq-item summary::after {
+        content: "+";
+        font-size: 18px;
+        font-weight: 300;
+        color: var(--muted);
+      }
+      .faq-item[open] summary::after {
+        content: "−";
+      }
+      .faq-item p {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 8px;
+        line-height: 1.7;
+      }
+      .faq-contact {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .faq-contact a {
+        color: var(--accent);
+      }
+
+      /* ── SOCIAL SECTION ── */
+      .social-section {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 32px;
+        margin-bottom: 2px;
+      }
+      .social-section h2 {
+        font-family: "Playfair Display", serif;
+        font-size: 20px;
+        text-align: center;
+        margin-bottom: 4px;
+      }
+      .social-section .sub {
+        text-align: center;
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 20px;
+      }
+      .social-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+      }
+      .social-img {
+        aspect-ratio: 1;
+        border-radius: 8px;
+        background: var(--bg);
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      /* hoodie SVG placeholder */
+      .hoodie-svg {
+        width: 100%;
+        max-width: 280px;
+        opacity: 0.55;
+      }
+
+      /* Responsive hint strip */
+      .info-strip {
+        background: #f0f9ff;
+        border: 1px solid #bae6fd;
+        border-radius: 8px;
+        padding: 10px 16px;
+        font-size: 12px;
+        color: #0369a1;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav>
+      <div class="breadcrumb">
+        <a href="#">Home</a><span>›</span>
+        <a href="#">Hoodies &amp; Sweatshirts</a><span>›</span>
+        <span class="current">Personalized Photo and Slogan Text Hoodie</span>
+      </div>
+      <div class="nav-actions">
+        <a href="#">Sign In</a>
+        <a href="#">Cart (0)</a>
+        <a href="#">❤ Wishlist</a>
+      </div>
+    </nav>
+
+    <div class="page">
+      <!-- ── PRODUCT TOP ── -->
+      <div class="product-top">
+        <!-- Gallery -->
+        <div class="gallery">
+          <div class="gallery-thumbs">
+            <div class="thumb active">
+              <svg
+                viewBox="0 0 64 64"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect width="64" height="64" fill="#e5e7eb" />
+                <path
+                  d="M20 42V26c0-3.3 2.7-6 6-6h12c3.3 0 6 2.7 6 6v16"
+                  stroke="#9ca3af"
+                  stroke-width="2"
+                  fill="#d1d5db"
+                />
+                <rect
+                  x="26"
+                  y="28"
+                  width="12"
+                  height="10"
+                  rx="2"
+                  fill="#9ca3af"
+                />
+              </svg>
+            </div>
+            <div class="thumb">
+              <svg
+                viewBox="0 0 64 64"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect width="64" height="64" fill="#e5e7eb" />
+                <path
+                  d="M20 42V26c0-3.3 2.7-6 6-6h12c3.3 0 6 2.7 6 6v16"
+                  stroke="#9ca3af"
+                  stroke-width="2"
+                  fill="#d1d5db"
+                />
+              </svg>
+            </div>
+            <div class="thumb">
+              <svg viewBox="0 0 64 64" fill="none">
+                <rect width="64" height="64" fill="#e5e7eb" />
+                <circle cx="32" cy="32" r="12" fill="#d1d5db" />
+              </svg>
+            </div>
+            <div class="thumb">
+              <svg viewBox="0 0 64 64" fill="none">
+                <rect width="64" height="64" fill="#e5e7eb" />
+                <rect
+                  x="18"
+                  y="18"
+                  width="28"
+                  height="28"
+                  rx="4"
+                  fill="#d1d5db"
+                />
+              </svg>
+            </div>
+          </div>
+          <div class="gallery-main">
+            <span class="sale-badge">SALE</span>
+            <!-- Hoodie SVG illustration -->
+            <svg
+              class="hoodie-svg"
+              viewBox="0 0 300 340"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <!-- Body -->
+              <path
+                d="M60 100 L30 220 L30 320 L270 320 L270 220 L240 100"
+                fill="#d1d5db"
+                stroke="#9ca3af"
+                stroke-width="2"
+              />
+              <!-- Sleeves -->
+              <path
+                d="M60 100 L20 160 L40 170 L70 130"
+                fill="#c9cdd4"
+                stroke="#9ca3af"
+                stroke-width="2"
+              />
+              <path
+                d="M240 100 L280 160 L260 170 L230 130"
+                fill="#c9cdd4"
+                stroke="#9ca3af"
+                stroke-width="2"
+              />
+              <!-- Hood -->
+              <path
+                d="M100 100 Q150 60 200 100 Q175 80 150 78 Q125 80 100 100Z"
+                fill="#c9cdd4"
+                stroke="#9ca3af"
+                stroke-width="2"
+              />
+              <!-- Strings -->
+              <line
+                x1="140"
+                y1="100"
+                x2="135"
+                y2="130"
+                stroke="#9ca3af"
+                stroke-width="1.5"
+              />
+              <line
+                x1="160"
+                y1="100"
+                x2="165"
+                y2="130"
+                stroke="#9ca3af"
+                stroke-width="1.5"
+              />
+              <!-- Front pocket -->
+              <path
+                d="M100 220 Q150 215 200 220 L200 270 Q150 275 100 270Z"
+                fill="none"
+                stroke="#9ca3af"
+                stroke-width="1.5"
+              />
+              <!-- Photo patch -->
+              <rect
+                x="120"
+                y="140"
+                width="60"
+                height="50"
+                rx="4"
+                fill="#9ca3af"
+                opacity=".5"
+              />
+              <rect
+                x="124"
+                y="144"
+                width="52"
+                height="42"
+                rx="3"
+                fill="#6b7280"
+                opacity=".4"
+              />
+              <text
+                x="150"
+                y="168"
+                text-anchor="middle"
+                font-size="8"
+                fill="#fff"
+                font-family="DM Sans, sans-serif"
+              >
+                PHOTO
+              </text>
+              <!-- Slogan text area -->
+              <text
+                x="150"
+                y="205"
+                text-anchor="middle"
+                font-size="7"
+                fill="#6b7280"
+                font-family="DM Sans, sans-serif"
+              >
+                YOUR SLOGAN HERE
+              </text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="product-info">
+          <div class="rating">
+            <span class="stars">★★★★★</span>
+            <span>4.9 (238 reviews)</span>
+          </div>
+
+          <h1>Personalized Photo and Slogan Text Hoodie</h1>
+
+          <div class="price-row">
+            <span class="price">$39.99</span>
+            <span class="price-old">$44.44</span>
+            <span class="price-save">Save 20%</span>
+          </div>
+
+          <div class="info-strip">
+            🔥 &nbsp;<strong>47 people</strong> are viewing this right now. Only
+            <strong>12 left</strong> in stock!
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Color -->
+          <div>
+            <div class="section-label">
+              Color:
+              <strong
+                style="
+                  color: var(--text);
+                  font-weight: 600;
+                  font-size: 13px;
+                  text-transform: none;
+                  letter-spacing: 0;
+                "
+                >White</strong
+              >
+            </div>
+            <div class="swatches">
+              <div class="swatch white active" title="White"></div>
+              <div class="swatch black" title="Black"></div>
+              <div class="swatch navy" title="Navy"></div>
+              <div class="swatch gray" title="Gray"></div>
+            </div>
+          </div>
+
+          <!-- Size -->
+          <div>
+            <div
+              class="section-label"
+              style="display: flex; justify-content: space-between"
+            >
+              <span>Size</span>
+              <a
+                href="#sizing"
+                style="
+                  color: var(--accent);
+                  font-size: 12px;
+                  text-decoration: none;
+                  text-transform: none;
+                  letter-spacing: 0;
+                  font-weight: 500;
+                "
+                >Size Guide</a
+              >
+            </div>
+            <div class="sizes">
+              <button class="size-btn">S</button>
+              <button class="size-btn active">M</button>
+              <button class="size-btn">L</button>
+              <button class="size-btn">XL</button>
+            </div>
+          </div>
+
+          <!-- Slogan Text -->
+          <div>
+            <!-- Quantity -->
+            <div>
+              <div class="section-label">Quantity</div>
+              <div class="qty-row">
+                <div class="qty-control">
+                  <button
+                    onclick="
+                      this.nextElementSibling.value = Math.max(
+                        1,
+                        +this.nextElementSibling.value - 1,
+                      )
+                    "
+                  >
+                    −
+                  </button>
+                  <input type="number" value="1" min="1" max="99" />
+                  <button
+                    onclick="
+                      this.previousElementSibling.value =
+                        +this.previousElementSibling.value + 1
+                    "
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-label" style="color: black">
+              Type Your custom Text
+            </div>
+            <p>
+              please note the front size and color in parentheses after your
+              text. br E.g MY BFF(30, Black)
+            </p>
+            <input
+              type="text"
+              class="text-input"
+              placeholder="My custom hoodie"
+              maxlength="60"
+            />
+          </div>
+          <div
+            style="
+              font-size: 15px;
+              color: var(--muted);
+              margin-top: 4px;
+              font-weight: bold;
+              color: #111;
+            "
+          >
+            Perfect to
+          </div>
+          <li>Dress yourself up</li>
+          <li>Anniversary gifts for your loved one</li>
+          <li>Birthday or celebration gifts for friends and family</li>
+
+          <div class="divider"></div>
+
+          <!-- CTAs -->
+          <button class="btn-primary">🛒 ADD TO HOODIE</button>
+          <button class="btn-wishlist">♡ Add to Wishlist</button>
+
+          <!-- Payment -->
+          <div style="font-size: 12px; color: var(--muted)">
+            Secure checkout with
+          </div>
+          <div class="payment-row">
+            <div class="payment-icon">VISA</div>
+            <div class="payment-icon">MC</div>
+            <div class="payment-icon">AMEX</div>
+            <div class="payment-icon">PayPal</div>
+            <div class="payment-icon">GPay</div>
+          </div>
+
+          <!-- Perks -->
+          <div class="divider"></div>
+        </div>
+      </div>
+
+      <!-- ── TABS ── -->
+      <div class="tabs-section" id="sizing">
+        <div class="tabs-header">
+          <button class="tab-btn active" onclick="showTab('overview', this)">
+            OVERVIEW
+          </button>
+          <button class="tab-btn" onclick="showTab('sizing', this)">
+            SIZING
+          </button>
+          <button class="tab-btn" onclick="showTab('packaging', this)">
+            PACKAGING
+          </button>
+          <button class="tab-btn" onclick="showTab('shipping', this)">
+            SHIPPING &amp; FREE RETURNS
+          </button>
+        </div>
+        <div class="tabs-content">
+          <!-- OVERVIEW -->
+          <div class="tab-pane active" id="tab-overview">
+            <div class="overview-grid">
+              <div class="overview-col">
+                <h4>Description</h4>
+                <p>
+                  Create a truly one-of-a-kind hoodie with your own photo and
+                  custom slogan. Perfect for birthdays, anniversaries, family
+                  reunions, or as a heartfelt gift for someone special. Our
+                  premium-quality print ensures vibrant, fade-resistant colors
+                  that last wash after wash.
+                </p>
+                <br />
+                <p>
+                  Each hoodie is carefully crafted to order, ensuring you
+                  receive a unique, personalised garment made just for you.
+                </p>
+              </div>
+              <div class="overview-col">
+                <h4>Material</h4>
+                <p>
+                  80% Cotton / 20% Polyester blend for the perfect balance of
+                  comfort and durability.
+                </p>
+                <br />
+                <h4>Care Instructions</h4>
+                <ul>
+                  <li>Machine wash cold, inside out</li>
+                  <li>Do not bleach or tumble dry</li>
+                  <li>Iron on reverse, avoid print</li>
+                  <li>Do not dry clean</li>
+                </ul>
+              </div>
+              <div class="overview-col">
+                <h4>Color Information</h4>
+                <p>
+                  Colors may vary slightly due to monitor calibration and the
+                  printing process. We recommend choosing a light-colored hoodie
+                  for the most vibrant photo print results.
+                </p>
+                <br />
+                <h4>Weight</h4>
+                <p>Approx. 480 gsm — substantial feel with excellent warmth.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- SIZING -->
+          <div class="tab-pane" id="tab-sizing">
+            <div class="sizing-layout">
+              <div>
+                <svg
+                  class="hoodie-diagram"
+                  viewBox="0 0 180 200"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M40 60 L20 130 L20 190 L160 190 L160 130 L140 60"
+                    fill="#e5e7eb"
+                    stroke="#9ca3af"
+                    stroke-width="1.5"
+                  />
+                  <path
+                    d="M40 60 L10 100 L25 106 L45 80"
+                    fill="#d1d5db"
+                    stroke="#9ca3af"
+                    stroke-width="1.5"
+                  />
+                  <path
+                    d="M140 60 L170 100 L155 106 L135 80"
+                    fill="#d1d5db"
+                    stroke="#9ca3af"
+                    stroke-width="1.5"
+                  />
+                  <path
+                    d="M65 60 Q90 40 115 60 Q100 50 90 49 Q80 50 65 60Z"
+                    fill="#d1d5db"
+                    stroke="#9ca3af"
+                    stroke-width="1.5"
+                  />
+                  <!-- arrows -->
+                  <line
+                    x1="90"
+                    y1="60"
+                    x2="90"
+                    y2="190"
+                    stroke="#1d4ed8"
+                    stroke-width="1"
+                    stroke-dasharray="3,3"
+                  />
+                  <text
+                    x="94"
+                    y="128"
+                    font-size="9"
+                    fill="#1d4ed8"
+                    font-family="DM Sans"
+                  >
+                    Length
+                  </text>
+                  <line
+                    x1="20"
+                    y1="80"
+                    x2="160"
+                    y2="80"
+                    stroke="#1d4ed8"
+                    stroke-width="1"
+                    stroke-dasharray="3,3"
+                  />
+                  <text
+                    x="73"
+                    y="76"
+                    font-size="9"
+                    fill="#1d4ed8"
+                    font-family="DM Sans"
+                  >
+                    Chest
+                  </text>
+                </svg>
+              </div>
+              <div>
+                <table class="size-table">
+                  <thead>
+                    <tr>
+                      <th>Size</th>
+                      <th>Chest (in)</th>
+                      <th>Length (in)</th>
+                      <th>Sleeve (in)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>XS</td>
+                      <td>36–38</td>
+                      <td>26</td>
+                      <td>24</td>
+                    </tr>
+                    <tr>
+                      <td>S</td>
+                      <td>38–40</td>
+                      <td>27</td>
+                      <td>25</td>
+                    </tr>
+                    <tr>
+                      <td>M</td>
+                      <td>40–42</td>
+                      <td>28</td>
+                      <td>25.5</td>
+                    </tr>
+                    <tr>
+                      <td>L</td>
+                      <td>42–44</td>
+                      <td>29</td>
+                      <td>26</td>
+                    </tr>
+                    <tr>
+                      <td>XL</td>
+                      <td>44–46</td>
+                      <td>30</td>
+                      <td>26.5</td>
+                    </tr>
+                    <tr>
+                      <td>2XL</td>
+                      <td>46–48</td>
+                      <td>31</td>
+                      <td>27</td>
+                    </tr>
+                    <tr>
+                      <td>3XL</td>
+                      <td>48–50</td>
+                      <td>32</td>
+                      <td>27.5</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- PACKAGING -->
+          <div class="tab-pane" id="tab-packaging">
+            <div class="pkg-cols">
+              <div>
+                <h4>Eco-Friendly Packaging</h4>
+                <p>
+                  All orders are shipped in 100% recyclable, plastic-free
+                  packaging. Your hoodie arrives neatly folded in a branded
+                  tissue paper wrap inside a sturdy kraft mailer box — perfect
+                  if you're ordering as a gift.
+                </p>
+                <br />
+                <h4>Gift Ready</h4>
+                <p>
+                  Add a personalised gift message at checkout and we'll include
+                  a handwritten-style card at no extra charge. The perfect
+                  finishing touch for any occasion.
+                </p>
+              </div>
+              <div>
+                <h4>Production Time</h4>
+                <p>
+                  As every item is made-to-order, please allow 2–4 business days
+                  for production before your order ships. Rush production (1
+                  business day) is available at checkout for an additional fee.
+                </p>
+                <br />
+                <h4>Sustainability</h4>
+                <p>
+                  We use water-based, non-toxic inks in our printing process.
+                  Our facility is GOTS-certified and committed to reducing
+                  environmental impact at every step.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- SHIPPING -->
+          <div class="tab-pane" id="tab-shipping">
+            <div class="shipping-cols">
+              <div>
+                <h4>Shipping Options</h4>
+                <p
+                  style="font-size: 13px; color: var(--muted); line-height: 1.7"
+                >
+                  <strong>Standard Shipping</strong> — Free on orders over $50.
+                  Estimated delivery: 5–7 business days.<br /><br />
+                  <strong>Express Shipping</strong> — $9.99. Estimated delivery:
+                  2–3 business days.<br /><br />
+                  <strong>Overnight</strong> — $19.99. Order by 12pm for
+                  next-business-day delivery.
+                </p>
+              </div>
+              <div>
+                <h4>Free Returns</h4>
+                <p
+                  style="font-size: 13px; color: var(--muted); line-height: 1.7"
+                >
+                  Not happy with your order? We offer hassle-free returns within
+                  30 days of delivery for non-personalised items. For
+                  personalised orders, we replace or refund in the event of a
+                  production error or quality issue — just send us a photo and
+                  we'll sort it out right away.<br /><br />
+                  Contact us at
+                  <a
+                    href="mailto:support@example.com"
+                    style="color: var(--accent)"
+                    >support@example.com</a
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TRUST BADGES ── -->
+      <div class="trust-section">
+        <div class="trust-item">
+          <div class="icon">🛡️</div>
+          <h5>Premium Quality</h5>
+          <p>Soft, durable fabric with fade-resistant printing</p>
+        </div>
+        <div class="trust-item">
+          <div class="icon">🎨</div>
+          <h5>Fully Custom</h5>
+          <p>Your photo &amp; text, exactly how you want it</p>
+        </div>
+        <div class="trust-item">
+          <div class="icon">🚀</div>
+          <h5>Ship Ready</h5>
+          <p>Production in 2–4 days, ships worldwide</p>
+        </div>
+        <div class="trust-item">
+          <div class="icon">📦</div>
+          <h5>Eco Packaging</h5>
+          <p>100% recyclable, plastic-free delivery</p>
+        </div>
+      </div>
+
+      <!-- ── REVIEWS ── -->
+      <div class="reviews-section">
+        <h2>From Our Hoodie &amp; Tees Lovers</h2>
+        <div class="sub">What customers have been saying</div>
+        <div class="reviews-grid">
+          <!-- Review 1 -->
+          <div class="review-card">
+            <div class="reviewer-photo-placeholder">B</div>
+            <div class="review-body" style="flex: 1">
+              <h5>Bianca Watts</h5>
+              <div class="r-stars">★★★★★</div>
+              <div class="r-title">Love this! Best quality, loved it!</div>
+              <p>
+                I ordered this for my daughter's birthday and she absolutely
+                loved it. The print quality is amazing and the hoodie itself is
+                so soft and comfortable. Would definitely order again!
+              </p>
+              <div class="r-product">
+                Personalized Photo and Slogan Text Hoodie · White / M
+              </div>
+            </div>
+            <div class="review-right">
+              <div class="review-right-placeholder">📸</div>
+            </div>
+          </div>
+          <!-- Review 2 -->
+          <div class="review-card">
+            <div
+              class="reviewer-photo-placeholder"
+              style="background: linear-gradient(135deg, #fde68a, #f59e0b)"
+            >
+              K
+            </div>
+            <div class="review-body" style="flex: 1">
+              <h5>Kevin Preston</h5>
+              <div class="r-stars">★★★★★</div>
+              <div class="r-title">
+                Perfect! The shipping was perfect and the photo was just...
+              </div>
+              <p>
+                The only word I have for this is perfect. I ordered this for our
+                family reunion and everyone loved it. The photo came out crisp
+                and the slogan was exactly as I typed it. Thank you!
+              </p>
+              <div class="r-product">
+                Personalized Photo and Slogan Text Hoodie · Black / L
+              </div>
+            </div>
+            <div class="review-right">
+              <div class="review-right-placeholder">📸</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-dots">
+          <div class="dot active"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      </div>
+
+      <!-- ── HEAD TO TOE MATCHING ── -->
+      <div class="matching-section">
+        <h2>For Head to Toe Matching</h2>
+        <div class="sub">
+          Mix &amp; match your custom garments with your hoodie
+        </div>
+        <div class="matching-grid">
+          <div class="matching-card">
+            <div class="matching-card-img">
+              <span class="mc-badge">SALE</span>
+              <svg width="100" height="120" viewBox="0 0 100 120" fill="none">
+                <rect width="100" height="120" fill="#e5e7eb" />
+                <path
+                  d="M25 45 L15 85 L15 110 L85 110 L85 85 L75 45"
+                  fill="#d1d5db"
+                  stroke="#9ca3af"
+                  stroke-width="1.5"
+                />
+                <path
+                  d="M40 45 Q50 35 60 45 Q55 38 50 37 Q45 38 40 45Z"
+                  fill="#c9cdd4"
+                  stroke="#9ca3af"
+                  stroke-width="1.5"
+                />
+              </svg>
+            </div>
+            <div class="matching-card-body">
+              <div class="mc-stars">★★★★★</div>
+              <h5>Personalized Photo Tee</h5>
+              <div class="mc-price">$49.99</div>
+            </div>
+          </div>
+          <div class="matching-card">
+            <div class="matching-card-img">
+              <span class="mc-badge">NEW</span>
+              <svg width="100" height="120" viewBox="0 0 100 120" fill="none">
+                <rect width="100" height="120" fill="#e5e7eb" />
+                <rect
+                  x="30"
+                  y="40"
+                  width="40"
+                  height="60"
+                  rx="3"
+                  fill="#d1d5db"
+                  stroke="#9ca3af"
+                  stroke-width="1.5"
+                />
+              </svg>
+            </div>
+            <div class="matching-card-body">
+              <div class="mc-stars">★★★★☆</div>
+              <h5>Custom Slogan Tote</h5>
+              <div class="mc-price">$34.99</div>
+            </div>
+          </div>
+          <div class="matching-card">
+            <div class="matching-card-img">
+              <span class="mc-badge">SALE</span>
+              <svg width="100" height="120" viewBox="0 0 100 120" fill="none">
+                <rect width="100" height="120" fill="#e5e7eb" />
+                <path
+                  d="M25 50 L25 100 L75 100 L75 50"
+                  fill="#d1d5db"
+                  stroke="#9ca3af"
+                  stroke-width="1.5"
+                />
+                <path
+                  d="M35 50 L35 40 L65 40 L65 50"
+                  fill="#c9cdd4"
+                  stroke="#9ca3af"
+                  stroke-width="1.5"
+                />
+              </svg>
+            </div>
+            <div class="matching-card-body">
+              <div class="mc-stars">★★★★★</div>
+              <h5>Personalized Jogger Pants</h5>
+              <div class="mc-price">$64.99</div>
+            </div>
+          </div>
+          <div class="matching-card">
+            <div class="matching-card-img">
+              <svg width="100" height="120" viewBox="0 0 100 120" fill="none">
+                <rect width="100" height="120" fill="#e5e7eb" />
+                <circle
+                  cx="50"
+                  cy="55"
+                  r="25"
+                  fill="#d1d5db"
+                  stroke="#9ca3af"
+                  stroke-width="1.5"
+                />
+                <rect
+                  x="35"
+                  y="70"
+                  width="30"
+                  height="8"
+                  rx="4"
+                  fill="#c9cdd4"
+                />
+              </svg>
+            </div>
+            <div class="matching-card-body">
+              <div class="mc-stars">★★★★☆</div>
+              <h5>Custom Photo Cap</h5>
+              <div class="mc-price">$29.99</div>
+            </div>
+          </div>
+        </div>
+        <button class="btn-view-all">View All Custom Products</button>
+      </div>
+
+      <!-- ── FAQ ── -->
+      <div class="faq-section">
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+          "
+        >
+          <div>
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-col">
+              <details class="faq-item">
+                <summary>
+                  Why do I need to choose a high-resolution image for my hoodie?
+                </summary>
+                <p>
+                  Higher resolution images ensure your photo prints crisp and
+                  clear. Low-res images can appear pixelated or blurry on the
+                  finished product. We recommend at least 1500×1500 pixels at
+                  300 DPI for best results.
+                </p>
+              </details>
+              <details class="faq-item">
+                <summary>Can I preview my design before I order?</summary>
+                <p>
+                  Yes! After uploading your photo and entering your slogan, a
+                  live preview will generate so you can see exactly how your
+                  hoodie will look before placing your order.
+                </p>
+              </details>
+              <details class="faq-item">
+                <summary>
+                  Can I cancel my order after it has been placed?
+                </summary>
+                <p>
+                  Orders can be cancelled within 1 hour of placement. After
+                  that, production begins and cancellations are no longer
+                  possible. Please double-check your design before ordering.
+                </p>
+              </details>
+              <details class="faq-item">
+                <summary>How do I track my order?</summary>
+                <p>
+                  Once your order ships, you'll receive an email with a tracking
+                  number and a link to follow your package in real time.
+                </p>
+              </details>
+              <details class="faq-item">
+                <summary>Something before I get my refund?</summary>
+                <p>
+                  For defective or incorrectly printed items, we issue a full
+                  refund or replacement within 2 business days of receiving your
+                  complaint. Just email us with photos of the issue.
+                </p>
+              </details>
+            </div>
+          </div>
+          <div>
+            <br /><br />
+            <div
+              class="faq-contact"
+              style="
+                background: var(--bg);
+                border-radius: 10px;
+                padding: 20px;
+                border: 1px solid var(--border);
+              "
+            >
+              <p style="font-weight: 600; margin-bottom: 6px">
+                Haven't found the answer you need?
+              </p>
+              <p>
+                Email us at
+                <a href="mailto:support@example.com">support@example.com</a> and
+                we'll get back to you within 24 hours.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SOCIAL / UGC ── -->
+      <div class="social-section">
+        <h2>You Should Be The Next One Here!</h2>
+        <div class="sub">
+          Follow us at
+          <a href="#" style="color: var(--accent)">@PrintHaven</a> and tag us to
+          be featured
+        </div>
+        <div class="social-grid">
+          <div class="social-img" style="background: #fde8e8">📸</div>
+          <div class="social-img" style="background: #e8f5e8">📸</div>
+          <div class="social-img" style="background: #e8eafe">📸</div>
+          <div class="social-img" style="background: #fef9e8">📸</div>
+          <div class="social-img" style="background: #e8f8fe">📸</div>
+        </div>
+      </div>
+    </div>
+    <!-- /page -->
+
+    <script>
+      // Tabs
+      function showTab(name, btn) {
+        document
+          .querySelectorAll(".tab-pane")
+          .forEach((p) => p.classList.remove("active"));
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((b) => b.classList.remove("active"));
+        document.getElementById("tab-" + name).classList.add("active");
+        btn.classList.add("active");
+      }
+
+      // Color swatches
+      document.querySelectorAll(".swatch").forEach((s) => {
+        s.addEventListener("click", () => {
+          document
+            .querySelectorAll(".swatch")
+            .forEach((x) => x.classList.remove("active"));
+          s.classList.add("active");
+        });
+      });
+
+      // Size buttons
+      document.querySelectorAll(".size-btn").forEach((b) => {
+        b.addEventListener("click", () => {
+          document
+            .querySelectorAll(".size-btn")
+            .forEach((x) => x.classList.remove("active"));
+          b.classList.add("active");
+        });
+      });
+
+      // Gallery thumbs
+      document.querySelectorAll(".thumb").forEach((t) => {
+        t.addEventListener("click", () => {
+          document
+            .querySelectorAll(".thumb")
+            .forEach((x) => x.classList.remove("active"));
+          t.classList.add("active");
+        });
+      });
+
+      // Review dots
+      document.querySelectorAll(".dot").forEach((d) => {
+        d.addEventListener("click", () => {
+          document
+            .querySelectorAll(".dot")
+            .forEach((x) => x.classList.remove("active"));
+          d.classList.add("active");
+        });
+      });
+    </script>
+  </body>
+</html>
